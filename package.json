@@ -1,0 +1,12 @@
+{
+    "name": "realtime-chat",
+    "version": "1.0.0",
+    "scripts": {
+        "dev:client": "pnpm --filter client dev",
+        "dev:server": "pnpm --filter server dev"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "MIT",
+    "packageManager": "pnpm@10.32.1"
+}
