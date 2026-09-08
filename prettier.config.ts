@@ -1,21 +1,21 @@
-import { type Config } from "prettier";
+import { type Config } from 'prettier'
 
 const config: Config = {
   semi: false,
   singleQuote: true,
-  quoteProps: "as-needed",
+  quoteProps: 'as-needed',
   bracketSpacing: true,
-  trailingComma: "all",
-  arrowParens: "always",
-  endOfLine: "auto",
+  trailingComma: 'all',
+  arrowParens: 'always',
+  endOfLine: 'auto',
   importOrderSeparation: true,
   importOrderSortSpecifiers: false,
-  importOrder: ["<THIRD_PARTY_MODULES>", "^@/", "^[./]"],
-  tailwindFunctions: ["tv"],
+  importOrder: ['<THIRD_PARTY_MODULES>', '^@/', '^[./]'],
+  tailwindFunctions: ['tv'],
   plugins: [
-    "@trivago/prettier-plugin-sort-imports",
-    "prettier-plugin-tailwindcss",
+    '@trivago/prettier-plugin-sort-imports',
+    'prettier-plugin-tailwindcss',
   ],
-};
+}
 
-export default config;
+export default config
