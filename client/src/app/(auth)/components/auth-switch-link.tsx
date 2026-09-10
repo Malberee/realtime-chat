@@ -19,7 +19,8 @@ export function AuthSwitchLink({ mode }: AuthSwitchLinkProps) {
   return (
     <Button
       variant="link"
-      className="mt-4"
+      role="link"
+      className="mt-4 w-full text-center"
       nativeButton={false}
       render={<Link href={href}>{text}</Link>}
     />
