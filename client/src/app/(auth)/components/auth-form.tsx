@@ -1,5 +1,6 @@
 'use client'
 
+import { zodResolver } from '@hookform/resolvers/zod'
 import {
   ArrowRight04FreeIcons,
   Envelope,
@@ -10,32 +11,30 @@ import {
 } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import type { IconSvgElement } from '@hugeicons/react'
-import { HTMLInputTypeAttribute, useReducer, useState } from 'react'
+import { HTMLInputTypeAttribute, useState } from 'react'
+import { type Resolver, useForm } from 'react-hook-form'
 
 import { Button } from '@/components/primitives/button'
-import { Field, FieldLabel } from '@/components/primitives/field'
+import { Field, FieldError, FieldLabel } from '@/components/primitives/field'
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupButton,
   InputGroupInput,
 } from '@/components/primitives/input-group'
+import { Spinner } from '@/components/primitives/spinner'
 
 import { AuthModes } from '../constants'
+import { authSchema, type AuthSchema } from '../schemas/auth'
 
 enum FormField {
   username = 'username',
   email = 'email',
   password = 'password',
 }
-type FormState = Record<FormField, string>
-type FormAction = {
-  type: FormField
-  payload: string
-}
 
 type FieldConfig = {
-  label: FormField
+  name: FormField
   icon: IconSvgElement
   type: HTMLInputTypeAttribute
 }
@@ -44,103 +43,114 @@ type AuthFormProps = {
   mode: AuthModes
 }
 
-function formReducer(state: FormState, action: FormAction): FormState {
-  return {
-    ...state,
-    [action.type]: action.payload,
-  }
-}
-
-const initialValues: FormState = {
-  username: '',
-  email: '',
-  password: '',
-}
-
 const formFields: FieldConfig[] = [
   {
-    label: FormField.username,
+    name: FormField.username,
     icon: UserIcon,
     type: 'text',
   },
   {
-    label: FormField.email,
+    name: FormField.email,
     icon: Envelope,
-    type: FormField.email,
+    type: 'email',
   },
   {
-    label: FormField.password,
+    name: FormField.password,
     icon: LockPasswordIcon,
-    type: FormField.password,
+    type: 'password',
   },
 ]
 
 export function AuthForm({ mode }: AuthFormProps) {
-  const [values, dispatch] = useReducer(formReducer, initialValues)
   const [showPassword, setShowPassword] = useState(false)
 
   const isSignUp = mode === AuthModes.signUp
 
   const fields = isSignUp
     ? formFields
-    : formFields.filter(({ label }) => label !== FormField.username)
+    : formFields.filter(({ name }) => name !== FormField.username)
 
-  function handleSubmit() {
+  const validationSchema = isSignUp
+    ? authSchema
+    : authSchema.omit({ username: true })
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    resolver: zodResolver(validationSchema) as unknown as Resolver<AuthSchema>,
+  })
+
+  async function handleSubmitForm(data: AuthSchema) {
+    await new Promise((resolve) => setTimeout(resolve, 3000))
+
     if (isSignUp) {
-      console.log('Sign up:', values)
+      console.log('Sign up:', data)
     } else {
       console.log('Sign in:', {
-        email: values.email,
-        password: values.password,
+        email: data.email,
+        password: data.password,
       })
     }
   }
 
   return (
     <form
+      noValidate
       className="flex flex-col gap-4"
-      onSubmit={(event) => {
-        event.preventDefault()
-        handleSubmit()
-      }}
+      onSubmit={handleSubmit(handleSubmitForm)}
     >
       <div className="flex flex-col gap-2">
-        {fields.map(({ label, type, icon }) => (
-          <Field key={label}>
-            <FieldLabel htmlFor="inline-end-input" className="capitalize">
-              {label}
-            </FieldLabel>
-            <InputGroup>
-              <InputGroupAddon align="inline-start">
-                <HugeiconsIcon icon={icon} />
-              </InputGroupAddon>
-              <InputGroupInput
-                placeholder={`Enter ${label}`}
-                type={
-                  type === FormField.password && showPassword ? 'text' : type
-                }
-                onChange={(event) =>
-                  dispatch({ type: label, payload: event.target.value })
-                }
-              />
-              {type === FormField.password && (
-                <InputGroupAddon align="inline-end">
-                  <InputGroupButton
-                    onClick={() => setShowPassword((prevState) => !prevState)}
-                  >
-                    <HugeiconsIcon
-                      icon={showPassword ? EyeClosedIcon : EyeIcon}
-                    />
-                  </InputGroupButton>
+        {fields.map(({ name, type, icon }) => {
+          const fieldId = `auth-${name}`
+          const error = errors[name]
+          const errorId = `${fieldId}-error`
+
+          return (
+            <Field key={name} data-invalid={Boolean(error)}>
+              <FieldLabel htmlFor={fieldId} className="capitalize">
+                {name}
+              </FieldLabel>
+              <InputGroup>
+                <InputGroupAddon align="inline-start">
+                  <HugeiconsIcon icon={icon} />
                 </InputGroupAddon>
-              )}
-            </InputGroup>
-          </Field>
-        ))}
+                <InputGroupInput
+                  id={fieldId}
+                  placeholder={`Enter ${name}`}
+                  type={
+                    type === FormField.password && showPassword ? 'text' : type
+                  }
+                  aria-describedby={error ? errorId : undefined}
+                  aria-invalid={Boolean(error)}
+                  {...register(name)}
+                />
+                {type === FormField.password && (
+                  <InputGroupAddon align="inline-end">
+                    <InputGroupButton
+                      type="button"
+                      onClick={() => setShowPassword((prevState) => !prevState)}
+                    >
+                      <HugeiconsIcon
+                        icon={showPassword ? EyeClosedIcon : EyeIcon}
+                      />
+                    </InputGroupButton>
+                  </InputGroupAddon>
+                )}
+              </InputGroup>
+              <FieldError id={errorId} errors={[error]} />
+            </Field>
+          )
+        })}
       </div>
-      <Button type="submit" className="w-full">
-        Start chatting
-        <HugeiconsIcon icon={ArrowRight04FreeIcons} data-icon="inline-end" />
+      <Button type="submit" className="w-full" disabled={isSubmitting}>
+        {isSubmitting ? 'Starting...' : 'Start chatting'}
+        {isSubmitting ? (
+          <Spinner data-icon="inline-end" />
+        ) : (
+          <HugeiconsIcon icon={ArrowRight04FreeIcons} data-icon="inline-end" />
+        )}
       </Button>
     </form>
   )
