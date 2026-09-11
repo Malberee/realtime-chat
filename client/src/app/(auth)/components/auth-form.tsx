@@ -23,9 +23,10 @@ import {
   InputGroupInput,
 } from '@/components/primitives/input-group'
 import { Spinner } from '@/components/primitives/spinner'
+import { signIn, signUp } from '@/lib/actions/auth'
+import { authSchema, type AuthSchema } from '@/lib/schemas/auth'
 
 import { AuthModes } from '../constants'
-import { authSchema, type AuthSchema } from '../schemas/auth'
 
 enum FormField {
   username = 'username',
@@ -83,12 +84,10 @@ export function AuthForm({ mode }: AuthFormProps) {
   })
 
   async function handleSubmitForm(data: AuthSchema) {
-    await new Promise((resolve) => setTimeout(resolve, 3000))
-
     if (isSignUp) {
-      console.log('Sign up:', data)
+      await signUp(data)
     } else {
-      console.log('Sign in:', {
+      await signIn({
         email: data.email,
         password: data.password,
       })
