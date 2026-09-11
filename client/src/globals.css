@@ -131,3 +131,12 @@
     @apply font-sans;
   }
 }
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+    transition: background-color 999999s ease-in-out 0s, 
+                color 999999s ease-in-out 0s;
+
+}

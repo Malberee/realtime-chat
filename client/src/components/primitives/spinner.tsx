@@ -1,0 +1,19 @@
+import { cn } from 'cn'
+import * as React from 'react'
+
+function Spinner({ className, ...props }: React.ComponentProps<'span'>) {
+  return (
+    <span
+      role="status"
+      aria-label="Loading"
+      data-slot="spinner"
+      className={cn(
+        'size-4 animate-spin rounded-full border-2 border-current border-t-transparent',
+        className,
+      )}
+      {...props}
+    />
+  )
+}
+
+export { Spinner }
