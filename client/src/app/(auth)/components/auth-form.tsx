@@ -95,6 +95,19 @@ export function AuthForm({ mode }: AuthFormProps) {
     }
   }
 
+  function renderToggleVisibility() {
+    return (
+      <InputGroupAddon align="inline-end">
+        <InputGroupButton
+          type="button"
+          onClick={() => setShowPassword((prevState) => !prevState)}
+        >
+          <HugeiconsIcon icon={showPassword ? EyeClosedIcon : EyeIcon} />
+        </InputGroupButton>
+      </InputGroupAddon>
+    )
+  }
+
   return (
     <form
       noValidate
@@ -126,18 +139,7 @@ export function AuthForm({ mode }: AuthFormProps) {
                   aria-invalid={Boolean(error)}
                   {...register(name)}
                 />
-                {type === FormField.password && (
-                  <InputGroupAddon align="inline-end">
-                    <InputGroupButton
-                      type="button"
-                      onClick={() => setShowPassword((prevState) => !prevState)}
-                    >
-                      <HugeiconsIcon
-                        icon={showPassword ? EyeClosedIcon : EyeIcon}
-                      />
-                    </InputGroupButton>
-                  </InputGroupAddon>
-                )}
+                {type === FormField.password && renderToggleVisibility()}
               </InputGroup>
               <FieldError id={errorId} errors={[error]} />
             </Field>
