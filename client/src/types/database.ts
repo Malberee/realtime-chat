@@ -12,11 +12,22 @@ export type Avatar = {
   foregroundColor: number
 }
 
+export type MessageType = Omit<
+  Database['public']['Tables']['messages']['Row'],
+  'author_id'
+>
+
 export type Database = MergeDeep<
   DatabaseGenerated,
   {
     public: {
       Tables: {
+        messages: {
+          Row: {
+            author_id: never
+            author: DatabaseGenerated['public']['Tables']['profiles']['Row']
+          }
+        }
         profiles: {
           Row: {
             avatar: Avatar
