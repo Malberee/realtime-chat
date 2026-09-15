@@ -3,16 +3,24 @@
 import { redirect } from 'next/navigation'
 
 import { routes } from '@/constants/routes'
+import { createAvatarParams } from '@/lib/avatar/create'
 import { AuthSchema } from '@/lib/schemas/auth'
 import { createClient } from '@/lib/supabase/server'
 
 export async function signUp({ email, password, username }: AuthSchema) {
   const supabase = await createClient()
 
+  const avatarParams = createAvatarParams()
+
   const { error } = await supabase.auth.signUp({
     email,
     password,
-    options: { data: { username } },
+    options: {
+      data: {
+        username,
+        avatar: avatarParams,
+      },
+    },
   })
 
   if (error) {
