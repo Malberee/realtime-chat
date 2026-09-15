@@ -1,4 +1,4 @@
-import AvatarCombiner from '@/components/avatar/conbiner'
+import { AvatarCombiner } from '@/components/avatar/combiner'
 import { Button } from '@/components/primitives/button'
 import { signOut } from '@/lib/actions/auth'
 

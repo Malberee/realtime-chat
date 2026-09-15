@@ -4,7 +4,7 @@ interface AvatarPartProps {
   foreground: string
 }
 
-export default function AvatarPart(props: AvatarPartProps) {
+export function AvatarPart(props: AvatarPartProps) {
   const y = 10 * props.row
   if (props.type === 1) {
     return (

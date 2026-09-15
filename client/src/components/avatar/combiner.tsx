@@ -1,8 +1,8 @@
 import { getAvatarParams, getColor } from '@/lib/avatar/read'
 
-import AvatarPart from './avatar-part'
+import { AvatarPart } from './avatar-part'
 
-export default async function AvatarCombiner() {
+export async function AvatarCombiner() {
   const params = await getAvatarParams()
   if (params) {
     const background = await getColor(params.backgroundColor)
