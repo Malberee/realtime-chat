@@ -8,7 +8,7 @@ import { getUserProfile } from '@/lib/queries/profile'
 import { createClient } from '@/lib/supabase/server'
 import { ProfileProvider } from '@/providers'
 
-import { MessagesBox } from './components'
+import { MessageCombiner, MessagesBox } from './components'
 
 export default async function Chat() {
   const supabase = await createClient()
@@ -33,8 +33,9 @@ export default async function Chat() {
         Sign out
       </Button>
       <ProfileProvider profile={userProfile}>
-        <div className="mx-auto flex size-full w-115 flex-col justify-between">
+        <div className="mx-auto flex h-full w-115 flex-col justify-between py-6">
           <MessagesBox messages={messages} />
+          <MessageCombiner />
         </div>
       </ProfileProvider>
     </main>
