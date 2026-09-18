@@ -1,5 +1,7 @@
 'use server'
 
+import { revalidatePath } from 'next/cache'
+
 import { createClient } from '@/lib/supabase/server'
 
 export async function getMessages() {
@@ -26,4 +28,25 @@ export async function getMessages() {
   }
 
   return messages
+}
+
+export async function createMessage(message: string) {
+  const supabase = await createClient()
+
+  const {
+    data: { user },
+    error: userError,
+  } = await supabase.auth.getUser()
+
+  if (userError) throw userError
+  if (!user) throw new Error('Unauthorized')
+
+  const { error } = await supabase.from('messages').insert({
+    text: message,
+    author_id: user.id,
+  })
+
+  if (error) throw error
+
+  revalidatePath('/chat')
 }
