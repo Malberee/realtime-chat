@@ -1,5 +1,9 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
+
+import { createClient } from '@/lib/supabase/client'
 import { MessageType } from '@/types/database'
 
 import { groupConsecutiveMessages } from '../utils'
@@ -10,6 +14,31 @@ type MessagesBoxProps = {
 }
 
 export function MessagesBox({ messages }: MessagesBoxProps) {
+  const router = useRouter()
+
+  useEffect(() => {
+    const supabase = createClient()
+
+    const channel = supabase
+      .channel('messages-inserts')
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'messages',
+        },
+        () => {
+          router.refresh()
+        },
+      )
+      .subscribe()
+
+    return () => {
+      supabase.removeChannel(channel)
+    }
+  }, [router])
+
   const messageGroups = groupConsecutiveMessages(messages)
 
   return (
