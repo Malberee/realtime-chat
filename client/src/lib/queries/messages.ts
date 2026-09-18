@@ -30,7 +30,7 @@ export async function getMessages() {
   return messages
 }
 
-export async function sendMessage(message: string) {
+export async function createMessage(message: string) {
   const supabase = await createClient()
 
   const {

@@ -1,7 +1,6 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import { createClient } from '@/lib/supabase/client'
 import { MessageType } from '@/types/database'
@@ -14,7 +13,7 @@ type MessagesBoxProps = {
 }
 
 export function MessagesBox({ messages }: MessagesBoxProps) {
-  const router = useRouter()
+  const [currentMessages, setCurrentMessages] = useState(messages)
 
   useEffect(() => {
     const supabase = createClient()
@@ -28,8 +27,25 @@ export function MessagesBox({ messages }: MessagesBoxProps) {
           schema: 'public',
           table: 'messages',
         },
-        () => {
-          router.refresh()
+        async (payload) => {
+          const { data: author } = await supabase
+            .from('profiles')
+            .select('id, username, avatar')
+            .eq('id', payload.new.author_id)
+            .single()
+
+          if (!author) {
+            return
+          }
+
+          const newMessage: MessageType = {
+            id: payload.new.id,
+            text: payload.new.text,
+            created_at: payload.new.created_at,
+            author,
+          }
+
+          setCurrentMessages((prev) => [...prev, newMessage])
         },
       )
       .subscribe()
@@ -37,9 +53,9 @@ export function MessagesBox({ messages }: MessagesBoxProps) {
     return () => {
       supabase.removeChannel(channel)
     }
-  }, [router])
+  }, [])
 
-  const messageGroups = groupConsecutiveMessages(messages)
+  const messageGroups = groupConsecutiveMessages(currentMessages)
 
   return (
     <div className="scroll-fade flex scrollbar-none flex-col gap-4 overflow-y-auto px-10 py-6">

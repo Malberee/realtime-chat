@@ -6,7 +6,7 @@ import { KeyboardEvent, SubmitEvent, useRef, useState } from 'react'
 
 import { Button } from '@/components/primitives/button'
 import { Textarea } from '@/components/primitives/textarea'
-import { sendMessage } from '@/lib/queries/messages'
+import { createMessage } from '@/lib/queries/messages'
 
 export function MessageCombiner() {
   const [text, setText] = useState('')
@@ -26,7 +26,7 @@ export function MessageCombiner() {
     const message = text.trim()
 
     if (message) {
-      await sendMessage(message)
+      await createMessage(message)
       setText('')
     }
   }
