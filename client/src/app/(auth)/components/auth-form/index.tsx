@@ -2,6 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
+  AlertCircleIcon,
   ArrowRight04FreeIcons,
   Envelope,
   LockPasswordIcon,
@@ -12,6 +13,7 @@ import type { IconSvgElement } from '@hugeicons/react'
 import type { HTMLInputTypeAttribute } from 'react'
 import { type Resolver, useForm } from 'react-hook-form'
 
+import { Alert, AlertDescription } from '@/components/primitives/alert'
 import { Button } from '@/components/primitives/button'
 import { Spinner } from '@/components/primitives/spinner'
 import { signIn, signUp } from '@/lib/actions/auth'
@@ -19,6 +21,7 @@ import { authSchema, type AuthSchema } from '@/lib/schemas/auth'
 
 import { AuthModes } from '../../constants'
 import { AuthField, FormField } from './auth-field'
+import { handleAuthError } from './auth-form.funcs'
 
 type FieldConfig = {
   name: FormField
@@ -62,20 +65,39 @@ export function AuthForm({ mode }: AuthFormProps) {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: zodResolver(validationSchema) as unknown as Resolver<AuthSchema>,
   })
 
   async function handleSubmitForm(data: AuthSchema) {
+    let error: string | undefined
+
     if (isSignUp) {
-      await signUp(data)
+      error = await signUp(data)
     } else {
-      await signIn({
+      error = await signIn({
         email: data.email,
         password: data.password,
       })
     }
+
+    if (error) {
+      handleAuthError(error, setError)
+    }
+  }
+
+  function renderAlert(message: string) {
+    return (
+      <Alert
+        variant="destructive"
+        className="flex justify-center border-none bg-transparent p-0"
+      >
+        <HugeiconsIcon icon={AlertCircleIcon} />
+        <AlertDescription>{message}</AlertDescription>
+      </Alert>
+    )
   }
 
   return (
@@ -84,6 +106,7 @@ export function AuthForm({ mode }: AuthFormProps) {
       className="flex flex-col gap-4"
       onSubmit={handleSubmit(handleSubmitForm)}
     >
+      {errors.root?.message && renderAlert(errors.root.message)}
       <div className="flex flex-col gap-2">
         {fields.map((field) => (
           <AuthField
