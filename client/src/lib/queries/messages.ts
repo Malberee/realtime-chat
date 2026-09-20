@@ -1,7 +1,5 @@
 'use server'
 
-import { revalidatePath } from 'next/cache'
-
 import { createClient } from '@/lib/supabase/server'
 
 export async function getMessages() {
@@ -47,6 +45,4 @@ export async function createMessage(message: string) {
   })
 
   if (error) throw error
-
-  revalidatePath('/chat')
 }
