@@ -1,5 +1,5 @@
 'use client'
-
+import { RealtimeChannel } from '@supabase/supabase-js'
 import { useEffect, useState } from 'react'
 
 import { createClient } from '@/lib/supabase/client'
@@ -18,49 +18,51 @@ export function MessagesBox({ messages }: MessagesBoxProps) {
   useEffect(() => {
     const supabase = createClient()
 
-    const channel = supabase
-      .channel('messages-inserts')
-      .on(
-        'postgres_changes',
-        {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'messages',
-        },
-        async (payload) => {
-          const { data: author } = await supabase
-            .from('profiles')
-            .select('id, username, avatar')
-            .eq('id', payload.new.author_id)
-            .single()
+    let channel: RealtimeChannel
 
-          if (!author) {
-            return
-          }
+    const subscribe = async () => {
+      await supabase.realtime.setAuth()
 
-          const newMessage: MessageType = {
-            id: payload.new.id,
-            text: payload.new.text,
-            created_at: payload.new.created_at,
-            author,
-          }
+      channel = supabase
+        .channel('messages', {
+          config: {
+            private: true,
+          },
+        })
+        .on(
+          'broadcast',
+          {
+            event: 'message_created',
+          },
+          ({ payload }) => {
+            const newMessage = payload as MessageType
 
-          setCurrentMessages((prev) => [...prev, newMessage])
-        },
-      )
-      .subscribe()
+            setCurrentMessages((prev) => {
+              if (prev.some((message) => message.id === newMessage.id)) {
+                return prev
+              }
+
+              return [...prev, newMessage]
+            })
+          },
+        )
+        .subscribe()
+    }
+
+    subscribe()
 
     return () => {
-      supabase.removeChannel(channel)
+      if (channel) {
+        supabase.removeChannel(channel)
+      }
     }
   }, [])
-
   const messageGroups = groupConsecutiveMessages(currentMessages)
 
   return (
     <div className="scroll-fade flex scrollbar-none flex-col gap-4 overflow-y-auto px-10 py-6">
-      {messageGroups.map((group, index) => (
-        <MessageGroup key={group[0].author.id + index} messages={group} />
+      {messageGroups.map((group) => (
+        <MessageGroup key={group[0].id} messages={group} />
       ))}
     </div>
   )
