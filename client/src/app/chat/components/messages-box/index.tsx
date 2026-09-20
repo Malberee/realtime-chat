@@ -2,15 +2,15 @@
 
 import { MessageType } from '@/types/database'
 
-import { groupConsecutiveMessages } from '../utils'
-import { MessageGroup } from './message-group'
+import { groupConsecutiveMessages } from '../../utils'
+import { MessageGroup } from '../message-group'
 import { useMessagesRealtime } from './use-messages-realtime'
 
 type MessagesBoxProps = {
-  messages: MessageType[]
+  initialMessages: MessageType[]
 }
 
-export function MessagesBox({ messages: initialMessages }: MessagesBoxProps) {
+export function MessagesBox({ initialMessages }: MessagesBoxProps) {
   const messages = useMessagesRealtime(initialMessages)
 
   const messageGroups = groupConsecutiveMessages(messages)
