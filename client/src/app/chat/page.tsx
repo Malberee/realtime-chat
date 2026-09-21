@@ -34,7 +34,7 @@ export default async function Chat() {
       </Button>
       <ProfileProvider profile={userProfile}>
         <div className="mx-auto flex h-full w-115 flex-col justify-between py-6">
-          <MessagesBox messages={messages} />
+          <MessagesBox initialMessages={messages} />
           <MessageCombiner />
         </div>
       </ProfileProvider>

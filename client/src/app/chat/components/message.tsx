@@ -56,7 +56,7 @@ export function Message({ message, position, isOwn = false }: MessageProps) {
                 (isOwn ? 'rounded-ee-sm' : 'rounded-es-sm'),
             )}
           >
-            {text}
+            <p className="whitespace-pre-wrap">{text}</p>
             <span className="block text-right text-xs opacity-75">
               {formattedDate}
             </span>
