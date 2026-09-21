@@ -19,7 +19,7 @@ export async function getMessages() {
     )
   `,
     )
-    .order('created_at', { ascending: true })
+    .order('created_at', { ascending: false })
 
   if (error) {
     throw error

@@ -7,7 +7,7 @@ export function groupConsecutiveMessages(messages: MessageType[]) {
     const lastGroup = groups.at(-1)
 
     if (lastGroup?.[0].author.id === message.author.id) {
-      lastGroup.push(message)
+      lastGroup.unshift(message)
     } else {
       groups.push([message])
     }
