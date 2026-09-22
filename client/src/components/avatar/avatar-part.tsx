@@ -12,7 +12,7 @@ export function AvatarPart(props: AvatarPartProps) {
         x="0"
         y={y}
         width="50"
-        height="10"
+        height="11"
         stroke="none"
         fill={props.foreground}
       />
@@ -23,7 +23,7 @@ export function AvatarPart(props: AvatarPartProps) {
         x="10"
         y={y}
         width="30"
-        height="10"
+        height="11"
         stroke="none"
         fill={props.foreground}
       />
@@ -34,7 +34,7 @@ export function AvatarPart(props: AvatarPartProps) {
         x="20"
         y={y}
         width="10"
-        height="10"
+        height="11"
         stroke="none"
         fill={props.foreground}
       />
@@ -46,7 +46,7 @@ export function AvatarPart(props: AvatarPartProps) {
           x="0"
           y={y}
           width="10"
-          height="10"
+          height="11"
           stroke="none"
           fill={props.foreground}
         />
@@ -54,7 +54,7 @@ export function AvatarPart(props: AvatarPartProps) {
           x="40"
           y={y}
           width="10"
-          height="10"
+          height="11"
           stroke="none"
           fill={props.foreground}
         />
@@ -67,7 +67,7 @@ export function AvatarPart(props: AvatarPartProps) {
           x="10"
           y={y}
           width="10"
-          height="10"
+          height="11"
           stroke="none"
           fill={props.foreground}
         />
@@ -75,7 +75,7 @@ export function AvatarPart(props: AvatarPartProps) {
           x="30"
           y={y}
           width="10"
-          height="10"
+          height="11"
           stroke="none"
           fill={props.foreground}
         />
@@ -88,7 +88,7 @@ export function AvatarPart(props: AvatarPartProps) {
           x="0"
           y={y}
           width="20"
-          height="10"
+          height="11"
           stroke="none"
           fill={props.foreground}
         />
@@ -96,7 +96,7 @@ export function AvatarPart(props: AvatarPartProps) {
           x="30"
           y={y}
           width="20"
-          height="10"
+          height="11"
           stroke="none"
           fill={props.foreground}
         />
@@ -109,7 +109,7 @@ export function AvatarPart(props: AvatarPartProps) {
           x="0"
           y={y}
           width="10"
-          height="10"
+          height="11"
           stroke="none"
           fill={props.foreground}
         />
@@ -117,7 +117,7 @@ export function AvatarPart(props: AvatarPartProps) {
           x="20"
           y={y}
           width="10"
-          height="10"
+          height="11"
           stroke="none"
           fill={props.foreground}
         />
@@ -125,7 +125,7 @@ export function AvatarPart(props: AvatarPartProps) {
           x="40"
           y={y}
           width="10"
-          height="10"
+          height="11"
           stroke="none"
           fill={props.foreground}
         />
@@ -138,7 +138,7 @@ export function AvatarPart(props: AvatarPartProps) {
           x="0"
           y={y}
           width="40"
-          height="10"
+          height="11"
           stroke="none"
           fill={props.foreground}
         />
@@ -151,7 +151,7 @@ export function AvatarPart(props: AvatarPartProps) {
           x="10"
           y={y}
           width="40"
-          height="10"
+          height="11"
           stroke="none"
           fill={props.foreground}
         />

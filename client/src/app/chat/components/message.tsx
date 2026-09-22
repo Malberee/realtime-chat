@@ -3,7 +3,8 @@
 import { cn } from 'cn'
 import dayjs from 'dayjs'
 
-import { Avatar, AvatarFallback } from '@/components/primitives/avatar'
+import { AvatarCombiner } from '@/components/avatar'
+import { Avatar } from '@/components/primitives/avatar'
 import { Bubble, BubbleContent } from '@/components/primitives/bubble'
 import { MessageType } from '@/types/database'
 
@@ -71,8 +72,7 @@ export function Message({ message, position, isOwn = false }: MessageProps) {
                 : '-inset-s-2 -translate-x-full',
             )}
           >
-            {/* Temp */}
-            <AvatarFallback>CG</AvatarFallback>
+            <AvatarCombiner avatar={message.author.avatar} />
           </Avatar>
         )}
       </div>

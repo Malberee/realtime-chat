@@ -25,7 +25,7 @@ export type Database = MergeDeep<
         messages: {
           Row: {
             author_id: never
-            author: DatabaseGenerated['public']['Tables']['profiles']['Row']
+            author: Database['public']['Tables']['profiles']['Row']
           }
         }
         profiles: {
