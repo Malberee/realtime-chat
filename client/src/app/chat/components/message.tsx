@@ -3,9 +3,10 @@
 import { cn } from 'cn'
 import dayjs from 'dayjs'
 
-import { Avatar, AvatarFallback } from '@/components/primitives/avatar'
+import { AvatarCombiner } from '@/components/avatar'
+import { Avatar } from '@/components/primitives/avatar'
 import { Bubble, BubbleContent } from '@/components/primitives/bubble'
-import { MessageType } from '@/types/database'
+import { Avatar as MyAvatar, MessageType } from '@/types/database'
 
 export enum MessagePosition {
   first = 'first',
@@ -17,10 +18,16 @@ export enum MessagePosition {
 type MessageProps = {
   message: MessageType
   position: MessagePosition
+  avatar: MyAvatar
   isOwn?: boolean
 }
 
-export function Message({ message, position, isOwn = false }: MessageProps) {
+export function Message({
+  message,
+  position,
+  avatar,
+  isOwn = false,
+}: MessageProps) {
   const { text, created_at, author } = message
 
   const isFirst = position === MessagePosition.first
@@ -71,8 +78,7 @@ export function Message({ message, position, isOwn = false }: MessageProps) {
                 : '-inset-s-2 -translate-x-full',
             )}
           >
-            {/* Temp */}
-            <AvatarFallback>CG</AvatarFallback>
+            <AvatarCombiner avatar={avatar} />
           </Avatar>
         )}
       </div>
