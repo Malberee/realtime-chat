@@ -4,7 +4,8 @@ import { MessageType } from '@/types/database'
 
 import { groupConsecutiveMessages } from '../../utils'
 import { MessageGroup } from '../message-group'
-import { useMessagesRealtime } from './use-messages-realtime'
+import { useAutoScroll } from './hooks'
+import { useMessagesRealtime } from './hooks/use-messages-realtime'
 
 type MessagesBoxProps = {
   initialMessages: MessageType[]
@@ -12,11 +13,15 @@ type MessagesBoxProps = {
 
 export function MessagesBox({ initialMessages }: MessagesBoxProps) {
   const messages = useMessagesRealtime(initialMessages)
-
   const messageGroups = groupConsecutiveMessages(messages)
+  const { containerRef, onScroll } = useAutoScroll(messages)
 
   return (
-    <div className="scroll-fade flex scrollbar-none flex-col gap-4 overflow-y-auto px-10 py-6">
+    <div
+      className="scroll-fade flex scrollbar-none flex-col-reverse gap-4 overflow-y-auto px-10 py-6"
+      onScroll={onScroll}
+      ref={containerRef}
+    >
       {messageGroups.map((group) => (
         <MessageGroup key={group[0].id} messages={group} />
       ))}

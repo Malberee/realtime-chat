@@ -23,9 +23,7 @@ export function useMessagesRealtime(initialMessages: MessageType[]) {
         ({ payload }) => {
           const newMessage = payload as MessageType
 
-          setMessages((prev) => {
-            return [...prev, newMessage]
-          })
+          setMessages((prev) => [newMessage, ...prev])
         },
       )
 
