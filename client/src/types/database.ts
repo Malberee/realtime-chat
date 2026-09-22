@@ -17,6 +17,8 @@ export type MessageType = Omit<
   'author_id'
 >
 
+export type ProfileType = Database['public']['Tables']['profiles']['Row']
+
 export type Database = MergeDeep<
   DatabaseGenerated,
   {

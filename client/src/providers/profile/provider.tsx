@@ -2,16 +2,14 @@
 
 import { createContext, PropsWithChildren, useContext } from 'react'
 
-import type { Database } from '@/types/database'
+import type { ProfileType } from '@/types/database'
 
-type Profile = Database['public']['Tables']['profiles']['Row']
-
-const ProfileContext = createContext<Profile | null>(null)
+const ProfileContext = createContext<ProfileType | null>(null)
 
 export function ProfileProvider({
   profile,
   children,
-}: PropsWithChildren<{ profile: Profile }>) {
+}: PropsWithChildren<{ profile: ProfileType }>) {
   return (
     <ProfileContext.Provider value={profile}>
       {children}

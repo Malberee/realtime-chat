@@ -1,14 +1,13 @@
 import { redirect } from 'next/navigation'
 
-import { Button } from '@/components/primitives/button'
+import { Header } from '@/components/header'
 import { routes } from '@/constants/routes'
-import { signOut } from '@/lib/actions/auth'
 import { getMessages } from '@/lib/queries/messages'
 import { getUserProfile } from '@/lib/queries/profile'
 import { createClient } from '@/lib/supabase/server'
 import { ProfileProvider } from '@/providers'
 
-import { MessageCombiner, MessagesBox } from './components'
+import { MessageCombiner, MessagesBox, Profile } from './components'
 
 export default async function Chat() {
   const supabase = await createClient()
@@ -28,16 +27,16 @@ export default async function Chat() {
   }
 
   return (
-    <main className="h-screen w-screen">
-      <Button className="absolute" onClick={signOut}>
-        Sign out
-      </Button>
-      <ProfileProvider profile={userProfile}>
+    <ProfileProvider profile={userProfile}>
+      <Header>
+        <Profile profile={userProfile} />
+      </Header>
+      <main className="h-screen w-screen">
         <div className="mx-auto flex h-full w-115 flex-col justify-between py-6">
           <MessagesBox initialMessages={messages} />
           <MessageCombiner />
         </div>
-      </ProfileProvider>
-    </main>
+      </main>
+    </ProfileProvider>
   )
 }
