@@ -1,6 +1,6 @@
 'use client'
 
-import { getShdcnColorByNumber } from '@/lib/utils'
+import { getAvatarColorByNumber } from '@/lib/utils'
 import { Avatar } from '@/types/database'
 
 import { AvatarPart } from './avatar-part'
@@ -10,8 +10,8 @@ interface AvatarProps {
 }
 
 export function AvatarCombiner({ avatar }: AvatarProps) {
-  const background = getShdcnColorByNumber(avatar.backgroundColor)
-  const foreground = getShdcnColorByNumber(avatar.foregroundColor)
+  const background = getAvatarColorByNumber(avatar.backgroundColor)
+  const foreground = getAvatarColorByNumber(avatar.foregroundColor)
 
   return (
     <svg

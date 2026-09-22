@@ -1,6 +1,4 @@
-export { cn } from 'cn'
-
-export function getShdcnColorByNumber(color: number) {
+export function getAvatarColorByNumber(color: number) {
   const colors: Record<number, string> = {
     1: '#fe9a00',
     2: '#2b7fff',
