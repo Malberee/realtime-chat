@@ -2,37 +2,26 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
+  AlertCircleIcon,
   ArrowRight04FreeIcons,
   Envelope,
-  EyeClosedIcon,
-  EyeIcon,
   LockPasswordIcon,
   UserIcon,
 } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import type { IconSvgElement } from '@hugeicons/react'
-import { HTMLInputTypeAttribute, useState } from 'react'
+import type { HTMLInputTypeAttribute } from 'react'
 import { type Resolver, useForm } from 'react-hook-form'
 
+import { Alert, AlertDescription } from '@/components/primitives/alert'
 import { Button } from '@/components/primitives/button'
-import { Field, FieldError, FieldLabel } from '@/components/primitives/field'
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupButton,
-  InputGroupInput,
-} from '@/components/primitives/input-group'
 import { Spinner } from '@/components/primitives/spinner'
 import { signIn, signUp } from '@/lib/actions/auth'
 import { authSchema, type AuthSchema } from '@/lib/schemas/auth'
 
-import { AuthModes } from '../constants'
-
-enum FormField {
-  username = 'username',
-  email = 'email',
-  password = 'password',
-}
+import { AuthModes } from '../../constants'
+import { AuthField, FormField } from './auth-field'
+import { handleAuthError } from './auth-form.funcs'
 
 type FieldConfig = {
   name: FormField
@@ -63,8 +52,6 @@ const formFields: FieldConfig[] = [
 ]
 
 export function AuthForm({ mode }: AuthFormProps) {
-  const [showPassword, setShowPassword] = useState(false)
-
   const isSignUp = mode === AuthModes.signUp
 
   const fields = isSignUp
@@ -78,32 +65,38 @@ export function AuthForm({ mode }: AuthFormProps) {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: zodResolver(validationSchema) as unknown as Resolver<AuthSchema>,
   })
 
   async function handleSubmitForm(data: AuthSchema) {
+    let error: string | undefined
+
     if (isSignUp) {
-      await signUp(data)
+      error = await signUp(data)
     } else {
-      await signIn({
+      error = await signIn({
         email: data.email,
         password: data.password,
       })
     }
+
+    if (error) {
+      handleAuthError(error, setError)
+    }
   }
 
-  function renderToggleVisibility() {
+  function renderAlert(message: string) {
     return (
-      <InputGroupAddon align="inline-end">
-        <InputGroupButton
-          type="button"
-          onClick={() => setShowPassword((prevState) => !prevState)}
-        >
-          <HugeiconsIcon icon={showPassword ? EyeClosedIcon : EyeIcon} />
-        </InputGroupButton>
-      </InputGroupAddon>
+      <Alert
+        variant="destructive"
+        className="flex justify-center border-none bg-transparent p-0"
+      >
+        <HugeiconsIcon icon={AlertCircleIcon} />
+        <AlertDescription>{message}</AlertDescription>
+      </Alert>
     )
   }
 
@@ -113,37 +106,16 @@ export function AuthForm({ mode }: AuthFormProps) {
       className="flex flex-col gap-4"
       onSubmit={handleSubmit(handleSubmitForm)}
     >
+      {errors.root?.message && renderAlert(errors.root.message)}
       <div className="flex flex-col gap-2">
-        {fields.map(({ name, type, icon }) => {
-          const fieldId = `auth-${name}`
-          const error = errors[name]
-          const errorId = `${fieldId}-error`
-
-          return (
-            <Field key={name} data-invalid={Boolean(error)}>
-              <FieldLabel htmlFor={fieldId} className="capitalize">
-                {name}
-              </FieldLabel>
-              <InputGroup>
-                <InputGroupAddon align="inline-start">
-                  <HugeiconsIcon icon={icon} />
-                </InputGroupAddon>
-                <InputGroupInput
-                  id={fieldId}
-                  placeholder={`Enter ${name}`}
-                  type={
-                    type === FormField.password && showPassword ? 'text' : type
-                  }
-                  aria-describedby={error ? errorId : undefined}
-                  aria-invalid={Boolean(error)}
-                  {...register(name)}
-                />
-                {type === FormField.password && renderToggleVisibility()}
-              </InputGroup>
-              <FieldError id={errorId} errors={[error]} />
-            </Field>
-          )
-        })}
+        {fields.map((field) => (
+          <AuthField
+            key={field.name}
+            register={register}
+            error={errors[field.name]}
+            {...field}
+          />
+        ))}
       </div>
       <Button type="submit" className="w-full" disabled={isSubmitting}>
         {isSubmitting ? 'Starting...' : 'Start chatting'}

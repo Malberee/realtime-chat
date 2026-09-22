@@ -9,7 +9,6 @@ import { createClient } from '@/lib/supabase/server'
 
 export async function signUp({ email, password, username }: AuthSchema) {
   const supabase = await createClient()
-
   const avatarParams = createAvatarParams()
 
   const { error } = await supabase.auth.signUp({
