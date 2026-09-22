@@ -25,7 +25,6 @@ export function MessageGroup({ messages }: MessageGroupProps) {
           key={message.id}
           message={message}
           position={getMessagePosition(index)}
-          avatar={message.author.avatar}
           isOwn={message.author.id === id}
         />
       ))}
