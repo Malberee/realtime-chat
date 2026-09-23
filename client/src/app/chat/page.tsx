@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 
 import { Header } from '@/components/shared'
@@ -8,6 +9,10 @@ import { createClient } from '@/lib/supabase/server'
 import { ProfileProvider } from '@/providers'
 
 import { MessageCombiner, MessagesBox, Profile } from './components'
+
+export const metadata: Metadata = {
+  title: 'Chat',
+}
 
 export default async function Chat() {
   const supabase = await createClient()
