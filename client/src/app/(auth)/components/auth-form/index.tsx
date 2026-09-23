@@ -13,9 +13,7 @@ import type { IconSvgElement } from '@hugeicons/react'
 import type { HTMLInputTypeAttribute } from 'react'
 import { type Resolver, useForm } from 'react-hook-form'
 
-import { Alert, AlertDescription } from '@/components/primitives/alert'
-import { Button } from '@/components/primitives/button'
-import { Spinner } from '@/components/primitives/spinner'
+import { Alert, AlertDescription, Button, Spinner } from '@/components/ui'
 import { signIn, signUp } from '@/lib/actions/auth'
 import { authSchema, type AuthSchema } from '@/lib/schemas/auth'
 

@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation'
 
-import { Header } from '@/components/header'
+import { Header } from '@/components/shared'
 import { routes } from '@/constants/routes'
 import { getMessages } from '@/lib/queries/messages'
 import { getUserProfile } from '@/lib/queries/profile'

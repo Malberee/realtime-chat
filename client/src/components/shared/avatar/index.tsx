@@ -14,12 +14,7 @@ export function AvatarCombiner({ avatar }: AvatarProps) {
   const foreground = getAvatarColorByNumber(avatar.foregroundColor)
 
   return (
-    <svg
-      width="100"
-      height="100"
-      className="size-full rounded-full"
-      viewBox="0 0 50 50"
-    >
+    <svg className="size-full rounded-full" viewBox="0 0 50 50">
       <rect
         x="0"
         y="0"

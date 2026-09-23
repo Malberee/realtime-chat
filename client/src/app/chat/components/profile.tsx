@@ -1,15 +1,15 @@
 import { SignOut } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon, type IconSvgElement } from '@hugeicons/react'
 
-import { AvatarCombiner } from '@/components/avatar'
-import { Avatar } from '@/components/primitives/avatar'
-import { Button } from '@/components/primitives/button'
+import { AvatarCombiner } from '@/components/shared'
 import {
+  Avatar,
+  Button,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/primitives/dropdown-menu'
+} from '@/components/ui'
 import { signOut } from '@/lib/actions/auth'
 import { ProfileType } from '@/types/database'
 

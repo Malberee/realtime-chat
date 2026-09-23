@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-import { Button } from '@/components/primitives/button'
+import { Button } from '@/components/ui'
 import { routes } from '@/constants/routes'
 
 import { AuthModes } from '../constants'
