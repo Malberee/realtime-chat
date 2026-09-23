@@ -1,4 +1,4 @@
-import { BubbleGroup } from '@/components/primitives/bubble'
+import { BubbleGroup } from '@/components/ui'
 import { useProfile } from '@/providers'
 import { MessageType } from '@/types/database'
 
