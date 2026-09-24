@@ -8,7 +8,7 @@ export function Header({ className, children }: HeaderProps) {
   return (
     <header
       className={cn(
-        'absolute top-0 left-0 flex w-full items-center justify-between p-6',
+        'bg-background/50 absolute top-0 left-0 z-10 flex w-full items-center justify-between p-4 backdrop-blur-sm',
         className,
       )}
     >

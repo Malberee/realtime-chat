@@ -40,7 +40,11 @@ export function MessageCombiner() {
         value={text}
         onKeyDown={handleKeyDown}
       />
-      <Button type="submit" size="icon-lg" className="size-9.5">
+      <Button
+        type="submit"
+        size="icon-lg"
+        className="aspect-square size-auto h-full"
+      >
         <HugeiconsIcon icon={SendIcon} />
       </Button>
     </form>
