@@ -37,7 +37,7 @@ export default async function Chat() {
         <Profile profile={userProfile} />
       </Header>
       <main className="h-screen w-screen">
-        <div className="mx-auto flex h-full w-115 flex-col justify-between py-6">
+        <div className="mx-auto flex h-full w-115 flex-col justify-between pb-6">
           <MessagesBox initialMessages={messages} />
           <MessageCombiner />
         </div>
