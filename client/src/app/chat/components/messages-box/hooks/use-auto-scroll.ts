@@ -1,6 +1,17 @@
-import { useEffect, useRef } from 'react'
+import { type Virtualizer } from '@tanstack/react-virtual'
+import { useLayoutEffect, useRef } from 'react'
 
-export function useAutoScroll<T>(observableList: T[]) {
+type UseAutoScrollOptions = {
+  latestMessageId: string | undefined
+  virtualizer: Virtualizer<HTMLDivElement, Element>
+  onReachStart: () => void
+}
+
+export function useAutoScroll({
+  latestMessageId,
+  virtualizer,
+  onReachStart,
+}: UseAutoScrollOptions) {
   const containerRef = useRef<HTMLDivElement>(null)
   const isAtBottomRef = useRef(true)
 
@@ -11,20 +22,25 @@ export function useAutoScroll<T>(observableList: T[]) {
       return
     }
 
-    isAtBottomRef.current = container.scrollTop >= -50
+    const distanceFromBottom =
+      container.scrollHeight - container.scrollTop - container.clientHeight
+
+    isAtBottomRef.current = distanceFromBottom <= 50
+
+    if (container.scrollTop <= 200) {
+      onReachStart()
+    }
   }
 
-  useEffect(() => {
-    const container = containerRef.current
-
-    if (!container || !isAtBottomRef.current) {
+  useLayoutEffect(() => {
+    if (!isAtBottomRef.current || !latestMessageId) {
       return
     }
 
-    container.scrollTo({
-      top: 0,
+    requestAnimationFrame(() => {
+      virtualizer.scrollToEnd()
     })
-  }, [observableList])
+  }, [latestMessageId, virtualizer])
 
   return {
     containerRef,
