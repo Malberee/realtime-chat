@@ -36,8 +36,8 @@ export default async function Chat() {
       <Header>
         <Profile profile={userProfile} />
       </Header>
-      <main className="h-screen w-screen">
-        <div className="mx-auto flex h-full w-115 flex-col justify-between pb-6">
+      <main className="size-full">
+        <div className="mx-auto flex h-full max-w-130 flex-col justify-between pb-6">
           <MessagesBox initialMessages={messages} />
           <MessageCombiner />
         </div>
