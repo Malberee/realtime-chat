@@ -25,8 +25,6 @@ export async function signUp({ email, password, username }: AuthSchema) {
   if (error) {
     return error.message
   }
-
-  redirect(routes.chat)
 }
 
 export async function signIn({
@@ -40,8 +38,6 @@ export async function signIn({
   if (error) {
     return error.message
   }
-
-  redirect(routes.chat)
 }
 
 export async function signOut() {

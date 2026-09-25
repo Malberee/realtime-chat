@@ -4,8 +4,7 @@ import { SendIcon } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import { KeyboardEvent, SubmitEvent, useRef, useState } from 'react'
 
-import { Button } from '@/components/primitives/button'
-import { Textarea } from '@/components/primitives/textarea'
+import { Button, Textarea } from '@/components/ui'
 import { createMessage } from '@/lib/queries/messages'
 
 export function MessageCombiner() {
@@ -41,7 +40,11 @@ export function MessageCombiner() {
         value={text}
         onKeyDown={handleKeyDown}
       />
-      <Button type="submit" size="icon-lg" className="size-9.5">
+      <Button
+        type="submit"
+        size="icon-lg"
+        className="aspect-square size-auto h-full"
+      >
         <HugeiconsIcon icon={SendIcon} />
       </Button>
     </form>

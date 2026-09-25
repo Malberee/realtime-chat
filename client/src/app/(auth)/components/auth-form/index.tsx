@@ -10,12 +10,12 @@ import {
 } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import type { IconSvgElement } from '@hugeicons/react'
-import type { HTMLInputTypeAttribute } from 'react'
+import { useRouter } from 'next/navigation'
+import { useTransition, type HTMLInputTypeAttribute } from 'react'
 import { type Resolver, useForm } from 'react-hook-form'
 
-import { Alert, AlertDescription } from '@/components/primitives/alert'
-import { Button } from '@/components/primitives/button'
-import { Spinner } from '@/components/primitives/spinner'
+import { Alert, AlertDescription, Button, Spinner } from '@/components/ui'
+import { routes } from '@/constants/routes'
 import { signIn, signUp } from '@/lib/actions/auth'
 import { authSchema, type AuthSchema } from '@/lib/schemas/auth'
 
@@ -52,6 +52,9 @@ const formFields: FieldConfig[] = [
 ]
 
 export function AuthForm({ mode }: AuthFormProps) {
+  const router = useRouter()
+  const [isPending, startTransition] = useTransition()
+
   const isSignUp = mode === AuthModes.signUp
 
   const fields = isSignUp
@@ -71,6 +74,8 @@ export function AuthForm({ mode }: AuthFormProps) {
     resolver: zodResolver(validationSchema) as unknown as Resolver<AuthSchema>,
   })
 
+  const isLoading = isSubmitting || isPending
+
   async function handleSubmitForm(data: AuthSchema) {
     let error: string | undefined
 
@@ -85,7 +90,12 @@ export function AuthForm({ mode }: AuthFormProps) {
 
     if (error) {
       handleAuthError(error, setError)
+      return
     }
+
+    startTransition(() => {
+      router.replace(routes.chat)
+    })
   }
 
   function renderAlert(message: string) {
@@ -117,9 +127,9 @@ export function AuthForm({ mode }: AuthFormProps) {
           />
         ))}
       </div>
-      <Button type="submit" className="w-full" disabled={isSubmitting}>
-        {isSubmitting ? 'Starting...' : 'Start chatting'}
-        {isSubmitting ? (
+      <Button type="submit" className="w-full" disabled={isLoading}>
+        {isLoading ? 'Starting...' : 'Start chatting'}
+        {isLoading ? (
           <Spinner data-icon="inline-end" />
         ) : (
           <HugeiconsIcon icon={ArrowRight04FreeIcons} data-icon="inline-end" />

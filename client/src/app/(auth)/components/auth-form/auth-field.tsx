@@ -10,13 +10,15 @@ import type {
   UseFormRegister,
 } from 'react-hook-form'
 
-import { Field, FieldError, FieldLabel } from '@/components/primitives/field'
 import {
+  Field,
+  FieldError,
+  FieldLabel,
   InputGroup,
   InputGroupAddon,
   InputGroupButton,
   InputGroupInput,
-} from '@/components/primitives/input-group'
+} from '@/components/ui'
 
 export enum FormField {
   username = 'username',

@@ -3,9 +3,8 @@
 import { cn } from 'cn'
 import dayjs from 'dayjs'
 
-import { AvatarCombiner } from '@/components/avatar'
-import { Avatar } from '@/components/primitives/avatar'
-import { Bubble, BubbleContent } from '@/components/primitives/bubble'
+import { AvatarCombiner } from '@/components/shared'
+import { Avatar, Bubble, BubbleContent } from '@/components/ui'
 import { MessageType } from '@/types/database'
 
 export enum MessagePosition {
