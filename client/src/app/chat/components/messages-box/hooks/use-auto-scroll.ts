@@ -1,15 +1,10 @@
+import { type Virtualizer } from '@tanstack/react-virtual'
 import { useEffect, useRef } from 'react'
 
-type Virtualizer = {
-  scrollToIndex: (
-    index: number,
-    options?: {
-      align?: 'start' | 'center' | 'end' | 'auto'
-    },
-  ) => void
-}
-
-export function useAutoScroll(itemCount: number, virtualizer: Virtualizer) {
+export function useAutoScroll(
+  itemCount: number,
+  virtualizer: Virtualizer<HTMLDivElement, Element>,
+) {
   const containerRef = useRef<HTMLDivElement>(null)
   const isAtBottomRef = useRef(true)
 

@@ -32,7 +32,7 @@ export function MessagesBox({ initialMessages }: MessagesBoxProps) {
 
   return (
     <div
-      className="scroll-fade scrollbar-none overflow-y-auto px-10 py-6"
+      className="scroll-fade scrollbar-thumb-secondary flex scrollbar-thin flex-col-reverse gap-4 overflow-y-auto px-10 py-6"
       onScroll={onScroll}
       ref={containerRef}
     >
@@ -42,23 +42,19 @@ export function MessagesBox({ initialMessages }: MessagesBoxProps) {
           height: `${rowVirtualizer.getTotalSize()}px`,
         }}
       >
-        {rowVirtualizer.getVirtualItems().map((virtualItem) => {
-          const group = messageGroups[virtualItem.index]
-
-          return (
-            <div
-              key={virtualItem.key}
-              data-index={virtualItem.index}
-              ref={rowVirtualizer.measureElement}
-              className="absolute top-0 left-0 w-full pb-4"
-              style={{
-                transform: `translateY(${virtualItem.start}px)`,
-              }}
-            >
-              <MessageGroup messages={group} />
-            </div>
-          )
-        })}
+        {rowVirtualizer.getVirtualItems().map((virtualItem) => (
+          <div
+            key={virtualItem.key}
+            data-index={virtualItem.index}
+            ref={rowVirtualizer.measureElement}
+            className="absolute top-0 left-0 w-full pb-4"
+            style={{
+              transform: `translateY(${virtualItem.start}px)`,
+            }}
+          >
+            <MessageGroup messages={messageGroups[virtualItem.index]} />
+          </div>
+        ))}
       </div>
     </div>
   )
