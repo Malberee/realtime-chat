@@ -32,7 +32,7 @@ export function MessagesBox({ initialMessages }: MessagesBoxProps) {
 
   return (
     <div
-      className="scroll-fade scrollbar-thumb-secondary flex scrollbar-thin flex-col-reverse gap-4 overflow-y-auto px-10 py-6"
+      className="scroll-fade scrollbar-thumb-secondary scrollbar-thin gap-4 overflow-y-auto px-10 py-6"
       onScroll={onScroll}
       ref={containerRef}
     >
