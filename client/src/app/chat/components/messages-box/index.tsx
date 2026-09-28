@@ -62,8 +62,8 @@ export function MessagesBox({
         }}
       >
         {isLoadingOlder && (
-          <div className="text-muted-foreground absolute top-12 left-0 z-10 w-full text-center text-sm">
-            <Spinner className="inline-block size-8" />
+          <div className="left-0 z-10 flex w-full justify-center pt-12 text-center">
+            <Spinner className="size-8" />
           </div>
         )}
 
