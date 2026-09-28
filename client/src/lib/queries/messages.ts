@@ -2,12 +2,12 @@
 
 import { createClient } from '@/lib/supabase/server'
 
-const MESSAGES_PAGE_SIZE = 50
-
 type MessagesCursor = {
   id: string
   created_at: string
 }
+
+const defaultMessagesPageSize = 50
 
 export async function getMessagesPage(before?: MessagesCursor) {
   const supabase = await createClient()
@@ -28,7 +28,7 @@ export async function getMessagesPage(before?: MessagesCursor) {
     )
     .order('created_at', { ascending: false })
     .order('id', { ascending: false })
-    .limit(MESSAGES_PAGE_SIZE + 1)
+    .limit(defaultMessagesPageSize + 1)
 
   if (before) {
     query = query.or(
@@ -42,10 +42,10 @@ export async function getMessagesPage(before?: MessagesCursor) {
     throw error
   }
 
-  const hasMore = messages.length > MESSAGES_PAGE_SIZE
+  const hasMore = messages.length > defaultMessagesPageSize
 
   return {
-    messages: messages.slice(0, MESSAGES_PAGE_SIZE),
+    messages: messages.slice(0, defaultMessagesPageSize),
     hasMore,
   }
 }

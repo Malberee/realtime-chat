@@ -3,6 +3,7 @@
 import { useVirtualizer } from '@tanstack/react-virtual'
 import { useCallback, useMemo } from 'react'
 
+import { Spinner } from '@/components/ui'
 import { MessageType } from '@/types/database'
 
 import { groupConsecutiveMessages } from '../../utils'
@@ -61,8 +62,8 @@ export function MessagesBox({
         }}
       >
         {isLoadingOlder && (
-          <div className="text-muted-foreground absolute top-2 left-0 w-full text-center text-sm">
-            Loading older messages…
+          <div className="text-muted-foreground absolute top-12 left-0 z-10 w-full text-center text-sm">
+            <Spinner className="inline-block size-8" />
           </div>
         )}
 
@@ -71,7 +72,7 @@ export function MessagesBox({
             key={virtualItem.key}
             data-index={virtualItem.index}
             ref={rowVirtualizer.measureElement}
-            className="absolute top-0 left-0 w-full pb-4"
+            className="absolute top-0 left-0 mt-16 w-full pb-4"
             style={{
               transform: `translateY(${virtualItem.start}px)`,
             }}

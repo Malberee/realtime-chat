@@ -101,7 +101,6 @@ export function useMessagesRealtime(
 
   return {
     messages,
-    hasMore,
     isLoadingOlder,
     loadOlderMessages,
     paginationBoundaryIds,
