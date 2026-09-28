@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation'
 
 import { Header } from '@/components/shared'
 import { routes } from '@/constants/routes'
-import { getMessages } from '@/lib/queries/messages'
+import { getMessagesPage } from '@/lib/queries/messages'
 import { getUserProfile } from '@/lib/queries/profile'
 import { createClient } from '@/lib/supabase/server'
 import { ProfileProvider } from '@/providers'
@@ -25,7 +25,7 @@ export default async function Chat() {
   }
 
   const userProfile = await getUserProfile(user.id)
-  const messages = await getMessages()
+  const { messages, hasMore } = await getMessagesPage()
 
   if (!userProfile) {
     throw new Error('User profile not found')
@@ -38,7 +38,7 @@ export default async function Chat() {
       </Header>
       <main className="size-full">
         <div className="mx-auto flex h-full max-w-130 flex-col justify-between pb-6">
-          <MessagesBox initialMessages={messages} />
+          <MessagesBox initialMessages={messages} initialHasMore={hasMore} />
           <MessageCombiner />
         </div>
       </main>
